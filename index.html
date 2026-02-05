@@ -9,10 +9,22 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background: linear-gradient(135deg, #0a0a0f 0%, #12121a 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background-attachment: fixed;
             min-height: 100vh;
             color: #fff;
             padding: 40px 20px;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(circle at 15% 25%, rgba(84, 180, 211, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(52, 211, 153, 0.08) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
         }
         .container { max-width: 1400px; margin: 0 auto; }
 
@@ -26,20 +38,31 @@
         }
         .tab-btn {
             padding: 12px 24px;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(84,180,211,0.3);
-            border-radius: 8px;
+            border-radius: 12px;
             color: rgba(255,255,255,0.6);
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: 600;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
-        .tab-btn:hover { border-color: #54B4D3; color: #fff; }
+        .tab-btn:hover {
+            border-color: #54B4D3;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(84, 180, 211, 0.2);
+        }
         .tab-btn.active {
-            background: rgba(84,180,211,0.2);
+            background: rgba(84,180,211,0.15);
+            backdrop-filter: blur(12px);
             border-color: #54B4D3;
             color: #54B4D3;
+            box-shadow: 0 0 20px rgba(84, 180, 211, 0.3);
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -773,27 +796,9 @@
     <script>
         // ===== DATA =====
         const PROJECTS = [
-            { id: 1, name: 'Gem Hunters Win Tracking', url: 'https://gem-dashboard-elite.vercel.app', desc: 'Win tracking dashboard for Gem Hunters community', status: 'live', category: 'Gem Hunters' },
-            { id: 2, name: 'Jarvis Master Project Tracking', url: 'https://gem-dashboard-elite.vercel.app/sort', desc: 'Central hub for all project changes and updates', status: 'live', category: 'Jarvis System' },
-            { id: 3, name: 'Knowledge Base', url: 'https://gem-dashboard-elite.vercel.app/knowledge', desc: 'Store transcripts, docs, and content for AI reference', status: 'live', category: 'Jarvis System' },
-            { id: 4, name: 'Command Center', url: 'https://command-center-eosin.vercel.app', desc: 'Central operations dashboard with security audit logs', status: 'live', category: 'Jarvis System' },
-            { id: 5, name: 'Lead Generation Tracking', url: 'https://kyle-dashboard.vercel.app', desc: 'Real-time lead pipeline monitor', status: 'live', category: 'Lead Gen' },
-            { id: 6, name: 'Agent Status Dashboard', url: 'https://agent-status-dashboard.vercel.app', desc: 'Monitor all agents, APIs, and cron jobs', status: 'live', category: 'Jarvis System' },
-            { id: 7, name: 'Call Setter AI ROI Calculator', url: 'https://roi-calculator-flax-eta.vercel.app', desc: 'Prospects calculate ROI and book demo', status: 'live', category: 'Call Setter AI' },
-            { id: 8, name: 'Callsetter Onboarding', url: 'https://callsetter-onboarding.vercel.app', desc: 'Custom branded client onboarding form', status: 'live', category: 'Call Setter AI' },
-            { id: 9, name: 'Call Setter AI Launch Tracker', url: 'https://launch-tracker-green.vercel.app', desc: 'Token and product launch tracking', status: 'live', category: 'Call Setter AI' },
-            { id: 10, name: 'Project Tracker', url: 'https://project-tracker-sand.vercel.app', desc: 'Track projects, tasks, and deliverables', status: 'live', category: 'Jarvis System' },
-            { id: 11, name: 'Crypto Tracker', url: 'https://crypto-tracker-pi-eosin.vercel.app', desc: 'Real-time cryptocurrency price tracking', status: 'live', category: 'Crypto' },
-            { id: 12, name: 'Algo Lab', url: 'https://algo-lab-delta.vercel.app', desc: 'Algorithm testing and experimentation', status: 'live', category: 'Crypto' },
-            { id: 13, name: 'Algo Leaderboard', url: 'https://algo-leaderboard.vercel.app', desc: 'Compare trading algorithms side-by-side', status: 'live', category: 'Crypto' },
-            { id: 14, name: 'Strategy Hub', url: 'https://strategy-hub-eosin.vercel.app', desc: 'Trading strategy documentation', status: 'live', category: 'Crypto' },
-            { id: 15, name: 'Gemhunters Job', url: 'https://gemhunters-job.vercel.app', desc: 'Commission-only closer recruitment page', status: 'live', category: 'Gem Hunters' },
-            { id: 16, name: 'Gemhunters Content Calendar', url: 'https://gemhunters-content-calendar.vercel.app', desc: 'Content planning and scheduling', status: 'live', category: 'Gem Hunters' },
-            { id: 17, name: 'Twitter Graphics', url: 'https://twitter-graphics.vercel.app', desc: 'Generate Twitter graphics with AI', status: 'building', category: 'Marketing' },
-            { id: 18, name: 'Twitter Mockups', url: 'https://twitter-mockups.vercel.app', desc: 'Twitter profile and tweet mockups', status: 'live', category: 'Marketing' },
-            { id: 19, name: 'LinkedIn Mockups', url: 'https://linkedin-mockups.vercel.app', desc: 'LinkedIn profile mockups for outreach', status: 'live', category: 'Marketing' },
-            { id: 20, name: 'Email Mockups', url: 'https://email-mockups.vercel.app', desc: 'Cold email sequence templates', status: 'live', category: 'Marketing' },
-            { id: 21, name: 'Cost Dashboard', url: 'https://cost-dashboard.vercel.app', desc: 'Track AI and API costs', status: 'building', category: 'Jarvis System' },
+            { id: 1, name: 'Personal', url: '#', desc: 'Personal projects, Jarvis system, automation', status: 'live', category: 'Personal' },
+            { id: 2, name: 'Call Setter AI', url: 'https://www.callsetter.ai', desc: 'AI voice agent business', status: 'live', category: 'Call Setter AI' },
+            { id: 3, name: 'Gem Hunters', url: 'https://gem-dashboard-elite.vercel.app', desc: 'Crypto signals community', status: 'live', category: 'Gem Hunters' },
         ];
 
         const DASHBOARDS = [
